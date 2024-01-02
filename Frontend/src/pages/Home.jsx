@@ -1,7 +1,13 @@
 // import React from 'react'
 
-function Home() {
-  return <div>Home</div>;
-}
+import Post from "../../components/Post";
+
+const Home = () => {
+  return (
+    <>
+      <Post />
+    </>
+  );
+};
 
 export default Home;
