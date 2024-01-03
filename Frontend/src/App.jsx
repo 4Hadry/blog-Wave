@@ -6,9 +6,11 @@ import PostDetails from "./pages/PostDetails";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UserProfile from "./pages/UserProfile";
+// import Authors from "./pages/Authors";
 import Authors from "./pages/Authors";
 import CreatePosts from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
+import DeletePost from "./pages/DeletePost";
 import Logout from "./pages/Logout";
 import AuthorsPost from "./pages/AuthorsPosts";
 import CategoryPost from "./pages/CategoryPosts";
@@ -28,6 +30,7 @@ const router = createBrowserRouter([
       { path: "authors", element: <Authors /> },
       { path: "create", element: <CreatePosts /> },
       { path: "posts/:id/edit", element: <EditPost /> },
+      { path: "posts/:id/delete", element: <DeletePost /> },
       { path: "logout", element: <Logout /> },
       { path: "myposts/:id", element: <Dashboard /> },
       { path: "posts/users/:id", element: <AuthorsPost /> },

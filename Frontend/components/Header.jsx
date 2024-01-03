@@ -16,7 +16,7 @@ function Header() {
           </Link>
           <ul className="nav_menu">
             <li>
-              <Link to="/profile">Ammar</Link>
+              <Link to="/profile/asss">Ammar</Link>
             </li>
             <li>
               <Link to="/create">Create Post</Link>
