@@ -8,7 +8,7 @@ import Avatar4 from "../../mern-blog/avatar4.jpg";
 import Avatar5 from "../../mern-blog/avatar5.jpg";
 
 const Authors_Data = [
-  { id: 1, avatar: Avatar1, name: "John", posts: 3 },
+  { id: 1, avatar: Avatar1, name: "John", posts: 6 },
   { id: 2, avatar: Avatar2, name: "Jane Doe", posts: 7 },
   { id: 3, avatar: Avatar3, name: "Haji", posts: 9 },
   { id: 4, avatar: Avatar4, name: "Saim", posts: 1 },
@@ -17,13 +17,13 @@ const Authors_Data = [
 
 const Authors = () => {
   const [authors, setAuthors] = useState(Authors_Data);
-  console.log(authorsData);
+  console.log(Authors_Data);
   return (
     <>
       <section className="authors">
         {authors.length > 0 ? (
           <div className="container authors_container">
-            {authors.map((id, avatar, name, posts) => {
+            {authors.map(({ id, avatar, name, posts }) => {
               return (
                 <Link key={id} to={`/posts/users/${id}`} className="author">
                   <div className="author_avatar">
