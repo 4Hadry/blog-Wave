@@ -4,7 +4,7 @@ import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import PostDetails from "./pages/PostDetails";
 import Register from "./pages/Register";
-import Login from "./pages/Login";
+import Login from "./pages/Login.jsx";
 import UserProfile from "./pages/UserProfile";
 // import Authors from "./pages/Authors";
 import Authors from "./pages/Authors";
@@ -15,11 +15,16 @@ import Logout from "./pages/Logout";
 import AuthorsPost from "./pages/AuthorsPosts";
 import CategoryPost from "./pages/CategoryPosts";
 import Dashboard from "./pages/Dashboard";
+import UserProvider from "./Context/UserContext.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <UserProvider>
+        <Layout />
+      </UserProvider>
+    ),
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },

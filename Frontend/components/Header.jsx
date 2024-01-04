@@ -3,12 +3,14 @@
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../src/Context/UserContext";
 
 function Header() {
   const [isNavShowing, setIsNAvShowing] = useState(
     window.innerWidth > 800 ? true : false
   );
+  const { currentUser } = useContext(UserContext);
   const closeNavHandler = () => {
     if (window.innerWidth < 800) {
       setIsNAvShowing(false);
@@ -25,7 +27,7 @@ function Header() {
               BLOG <span>WAVE</span>
             </h2>
           </Link>
-          {isNavShowing && (
+          {currentUser?.data.user.id && isNavShowing && (
             <ul className="nav_menu">
               <li>
                 <Link to="/profile/asss" onClick={closeNavHandler}>
@@ -45,6 +47,20 @@ function Header() {
               <li>
                 <Link to="/logout" onClick={closeNavHandler}>
                   Logout
+                </Link>
+              </li>
+            </ul>
+          )}
+          {!currentUser?.data.user.id && isNavShowing && (
+            <ul className="nav_menu">
+              <li>
+                <Link to="/authors" onClick={closeNavHandler}>
+                  Authors
+                </Link>
+              </li>
+              <li>
+                <Link to="/login" onClick={closeNavHandler}>
+                  Login
                 </Link>
               </li>
             </ul>
