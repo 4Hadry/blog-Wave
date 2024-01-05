@@ -5,12 +5,13 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { UserContext } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [category, setCtegory] = useState("Uncategorized");
   const [desc, setDesc] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+  const [error, setError] = useState("");
   const { currentUser } = useContext(UserContext);
   const token = currentUser?.authToken;
   const navigate = useNavigate();
@@ -50,6 +51,30 @@ const CreatePost = () => {
     "image",
   ];
 
+  const createPost = async (e) => {
+    e.preventDefault();
+
+    const postData = new FormData();
+    postData.set("title", title);
+    postData.set("category", category);
+    postData.set("description", desc);
+    postData.set("thumbnail", thumbnail);
+
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/api/posts`,
+        postData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (response.status == 201) {
+        return navigate("/");
+      }
+    } catch (err) {
+      setError(err.response.data);
+      console.log(err.response);
+    }
+  };
+
   const POST_CATEGORIES = [
     "Agriculture",
     "Business",
@@ -63,8 +88,8 @@ const CreatePost = () => {
     <section className="create-post">
       <div className="container">
         <h2>Create Post</h2>
-        <p className="form_err-msg">This is Error Massage</p>
-        <form className="form create-post_form">
+        {error && <p className="form_err-msg">{error}</p>}
+        <form className="form create-post_form" onSubmit={createPost}>
           <input
             type="text"
             placeholder="Title"

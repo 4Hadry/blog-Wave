@@ -31,7 +31,7 @@ function Header() {
             <ul className="nav_menu">
               <li>
                 <Link to="/profile/asss" onClick={closeNavHandler}>
-                  Ammar
+                  {currentUser?.data.user.name}
                 </Link>
               </li>
               <li>

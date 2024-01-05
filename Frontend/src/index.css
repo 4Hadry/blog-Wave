@@ -90,6 +90,7 @@ section {
 }
 .container {
   width: 84%;
+  /* height: 100vh; */
   margin-inline: auto;
 }
 .btn {
@@ -172,6 +173,7 @@ footer {
   background: var(--color-grey-900);
   margin-top: 6rem;
   padding-top: 6rem;
+  position: sticky;
 }
 
 .footer_categories {

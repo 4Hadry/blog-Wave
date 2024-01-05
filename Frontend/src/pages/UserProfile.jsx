@@ -1,10 +1,11 @@
 // import React from 'react'
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../mern-blog/avatar15.jpg";
 import { FaEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../Context/UserContext";
 const UserProfile = () => {
   const [avatar, setAvatar] = useState(Avatar);
   const [name, setName] = useState("");
@@ -12,10 +13,22 @@ const UserProfile = () => {
   const [currentPass, setCurrentPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmNewPass, setConfirmPass] = useState("");
+  const { currentUser } = useContext(UserContext);
+
+  const token = currentUser?.authToken;
+  const navigate = useNavigate();
+
+  // redirect to login page for any user who isn't logged in
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <section className="profile">
       <div className="container profile_container">
-        <Link to={`/myposts/qwerr`} className="btn">
+        <Link to={`/myposts/${currentUser.data.user.id}`} className="btn">
           My Posts
         </Link>
 
