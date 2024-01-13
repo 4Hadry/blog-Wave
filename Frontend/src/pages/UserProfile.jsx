@@ -1,20 +1,23 @@
 // import React from 'react'
 
 import { Link, useNavigate } from "react-router-dom";
-import Avatar from "../../mern-blog/avatar15.jpg";
+// import Avatar from "../../mern-blog/avatar15.jpg";
 import { FaEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Context/UserContext";
+import axios from "axios";
 const UserProfile = () => {
-  const [avatar, setAvatar] = useState(Avatar);
+  const [avatar, setAvatar] = useState("");
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [currentPass, setCurrentPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmNewPass, setConfirmPass] = useState("");
-  const { currentUser } = useContext(UserContext);
+  const [isAvatarToched, setIsAvatarToched] = useState(false);
 
+  const { currentUser } = useContext(UserContext);
   const token = currentUser?.authToken;
   const navigate = useNavigate();
 
@@ -24,6 +27,58 @@ const UserProfile = () => {
       navigate("/login");
     }
   }, []);
+
+  const updateUserDetail = async (e) => {
+    e.preventDefault();
+    try {
+      const userData = new FormData();
+      userData.set("name", name);
+      userData.set("email", email);
+      userData.set("currentPassword", currentPass);
+      userData.set("newPassword", newPass);
+      userData.set("newConfirmPassword", confirmNewPass);
+      const response = await axios.patch(
+        `http://localhost:4000/api/users/edit-user`,
+        userData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (response.status == 200) {
+        navigate("/logout");
+      }
+    } catch (error) {
+      setError(error.response.data);
+    }
+  };
+
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await axios.get(
+        `http://localhost:4000/api/users/${currentUser.data.user.id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const { name, email, avatar } = response.data;
+      setName(name);
+      setEmail(email);
+      setAvatar(avatar);
+    };
+    getUser();
+  }, []);
+
+  const changeAvatar = async () => {
+    setIsAvatarToched(false);
+    try {
+      const postData = new FormData();
+      postData.set("avatar", avatar);
+      const response = await axios.post(
+        `http://localhost:4000/api/users/change-avatar`,
+        postData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setAvatar(response?.data.avatar);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <section className="profile">
@@ -35,7 +90,7 @@ const UserProfile = () => {
         <div className="profile_details">
           <div className="avatar_wrapper">
             <div className="profile_avatar">
-              <img src={avatar} alt="" />
+              <img src={`http://localhost:4000/uploads/${avatar}`} alt="" />
             </div>
             {/* form to update Avatar  */}
             <form className="avatar_form">
@@ -46,19 +101,21 @@ const UserProfile = () => {
                 onChange={(e) => setAvatar(e.target.files[0])}
                 accept="png,jpg,jpeg"
               />
-              <label htmlFor="avatar">
+              <label htmlFor="avatar" onClick={() => setIsAvatarToched(true)}>
                 <FaEdit />
               </label>
             </form>
-            <button className="profile_avatar-btn">
-              <FaCheck />
-            </button>
+            {isAvatarToched && (
+              <button className="profile_avatar-btn" onClick={changeAvatar}>
+                <FaCheck />
+              </button>
+            )}
           </div>
-          <h1>John Doe</h1>
+          <h1>{currentUser.data.user.name}</h1>
 
           {/* form to update user details  */}
-          <form className="form profile_form">
-            <p className="form_err-msg">This is an error message</p>
+          <form className="form profile_form" onSubmit={updateUserDetail}>
+            {error && <p className="form_err-msg">{error}</p>}
             <input
               type="text"
               placeholder="Full Name"

@@ -30,7 +30,10 @@ function Header() {
           {currentUser?.data.user.id && isNavShowing && (
             <ul className="nav_menu">
               <li>
-                <Link to="/profile/asss" onClick={closeNavHandler}>
+                <Link
+                  to={`/profile/${currentUser.data.user.id}`}
+                  onClick={closeNavHandler}
+                >
                   {currentUser?.data.user.name}
                 </Link>
               </li>
