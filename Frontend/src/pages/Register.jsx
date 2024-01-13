@@ -31,8 +31,8 @@ const Register = () => {
       }
       navigate("/login");
     } catch (err) {
-      setError(err.response.data);
-      // console.log(err.response);
+      setError(err.response.data.message);
+      console.log(err.response.data.message);
     }
   };
 

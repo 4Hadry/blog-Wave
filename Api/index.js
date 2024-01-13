@@ -7,10 +7,9 @@ var postRouter = require("./routes/postsRouter");
 
 require("dotenv").config();
 const upload = require("express-fileupload");
-// const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const app = express();
-// app.use(notFound);
-// app.use(errorHandler);
+
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ credentials: true }));
@@ -19,6 +18,9 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 
 app.use("/api/users", usersRouter);
 app.use("/api/posts", postRouter);
+
+app.use(notFound);
+app.use(errorHandler);
 
 connect(process.env.MONGO)
   .then(
